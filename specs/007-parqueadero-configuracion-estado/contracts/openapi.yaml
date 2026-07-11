@@ -1,0 +1,105 @@
+openapi: 3.0.3
+info:
+  title: ParkingPaTi API — Creación y configuración general de parqueadero
+  version: 0.1.0
+servers:
+- url: http://localhost:8000
+security:
+- bearerAuth: []
+paths:
+  /api/parqueaderos/:
+    post:
+      summary: Crea parqueadero.
+      tags:
+      - 007-parqueadero-configuracion-estado
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operación exitosa
+        '201':
+          description: Recurso creado
+        '400':
+          description: Solicitud inválida
+        '401':
+          description: No autenticado
+        '403':
+          description: No autorizado
+        '404':
+          description: No encontrado
+  /api/parqueaderos/mios/:
+    get:
+      summary: Lista parqueaderos del propietario autenticado.
+      tags:
+      - 007-parqueadero-configuracion-estado
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operación exitosa
+        '201':
+          description: Recurso creado
+        '400':
+          description: Solicitud inválida
+        '401':
+          description: No autenticado
+        '403':
+          description: No autorizado
+        '404':
+          description: No encontrado
+  /api/parqueaderos/{id}/:
+    patch:
+      summary: Actualiza datos generales.
+      tags:
+      - 007-parqueadero-configuracion-estado
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operación exitosa
+        '201':
+          description: Recurso creado
+        '400':
+          description: Solicitud inválida
+        '401':
+          description: No autenticado
+        '403':
+          description: No autorizado
+        '404':
+          description: No encontrado
+  /api/parqueaderos/{id}/estado/:
+    patch:
+      summary: Cambia disponibilidad general.
+      tags:
+      - 007-parqueadero-configuracion-estado
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operación exitosa
+        '201':
+          description: Recurso creado
+        '400':
+          description: Solicitud inválida
+        '401':
+          description: No autenticado
+        '403':
+          description: No autorizado
+        '404':
+          description: No encontrado
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: boolean
+        detail:
+          type: string
+        code:
+          type: string

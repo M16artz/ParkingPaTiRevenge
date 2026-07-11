@@ -1,0 +1,104 @@
+openapi: 3.0.3
+info:
+  title: ParkingPaTi API — Gestión de espacios de parqueadero
+  version: 0.1.0
+servers:
+- url: http://localhost:8000
+security:
+- bearerAuth: []
+paths:
+  /api/espacios/:
+    get:
+      summary: Lista espacios.
+      tags:
+      - 010-gestion-espacios
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operación exitosa
+        '201':
+          description: Recurso creado
+        '400':
+          description: Solicitud inválida
+        '401':
+          description: No autenticado
+        '403':
+          description: No autorizado
+        '404':
+          description: No encontrado
+    post:
+      summary: Crea espacio.
+      tags:
+      - 010-gestion-espacios
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operación exitosa
+        '201':
+          description: Recurso creado
+        '400':
+          description: Solicitud inválida
+        '401':
+          description: No autenticado
+        '403':
+          description: No autorizado
+        '404':
+          description: No encontrado
+  /api/espacios/{id}/estado/:
+    patch:
+      summary: Cambia estado.
+      tags:
+      - 010-gestion-espacios
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operación exitosa
+        '201':
+          description: Recurso creado
+        '400':
+          description: Solicitud inválida
+        '401':
+          description: No autenticado
+        '403':
+          description: No autorizado
+        '404':
+          description: No encontrado
+  /api/espacios/{id}/:
+    delete:
+      summary: Elimina espacio.
+      tags:
+      - 010-gestion-espacios
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operación exitosa
+        '201':
+          description: Recurso creado
+        '400':
+          description: Solicitud inválida
+        '401':
+          description: No autenticado
+        '403':
+          description: No autorizado
+        '404':
+          description: No encontrado
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: boolean
+        detail:
+          type: string
+        code:
+          type: string

@@ -1,0 +1,67 @@
+openapi: 3.0.3
+info:
+  title: 'ParkingPaTi API — Usuarios anónimos: localización y búsqueda de parqueaderos'
+  version: 0.1.0
+servers:
+- url: http://localhost:8000
+security:
+- bearerAuth: []
+paths:
+  /api/parqueaderos/:
+    get:
+      summary: Búsqueda pública cercana.
+      tags:
+      - 011-anonimos-localizacion-busqueda
+      security: []
+      responses:
+        '200':
+          description: Operación exitosa
+        '201':
+          description: Recurso creado
+        '400':
+          description: Solicitud inválida
+        '401':
+          description: No autenticado
+        '403':
+          description: No autorizado
+        '404':
+          description: No encontrado
+  /api/parqueaderos/{id}/publico/:
+    get:
+      summary: Detalle público.
+      tags:
+      - 011-anonimos-localizacion-busqueda
+      security: []
+      responses:
+        '200':
+          description: Operación exitosa
+        '201':
+          description: Recurso creado
+        '400':
+          description: Solicitud inválida
+        '401':
+          description: No autenticado
+        '403':
+          description: No autorizado
+        '404':
+          description: No encontrado
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: boolean
+        detail:
+          type: string
+        code:
+          type: string
+
+# Contrato WebSocket
+# /ws/parqueaderos/{parqueadero_id}/: Disponibilidad en vivo del detalle.
+# Mensaje recibido ejemplo: {"type":"espacio_actualizado","espacio_id":1,"parqueadero_id":1,"estado":"LIBRE","disponibles":10}
