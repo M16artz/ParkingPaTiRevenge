@@ -1,0 +1,157 @@
+openapi: 3.0.3
+info:
+  title: ParkingPaTi API - Registro de propietario y documentos
+  version: 0.1.0
+servers:
+  - url: http://localhost:8000
+security:
+  - bearerAuth: []
+paths:
+  /api/auth/register/:
+    post:
+      summary: Registra una cuenta de propietario o conductor.
+      tags: [004-registro-usuario-documentos]
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterRequest"
+      responses:
+        "201":
+          description: Cuenta creada.
+        "400":
+          description: Datos invalidos.
+  /api/documentos/:
+    get:
+      summary: Consulta documentos propios o pendientes si el usuario es administrador.
+      tags: [004-registro-usuario-documentos]
+      responses:
+        "200":
+          description: Lista de documentos.
+        "401":
+          description: No autenticado.
+    post:
+      summary: Sube documento de propietario.
+      tags: [004-registro-usuario-documentos]
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [archivo]
+              properties:
+                archivo:
+                  type: string
+                  format: binary
+                  description: PDF, JPG, JPEG o PNG de maximo 5 MB.
+      responses:
+        "201":
+          description: Documento creado en estado pendiente.
+        "400":
+          description: Archivo invalido.
+        "401":
+          description: No autenticado.
+        "403":
+          description: Rol no autorizado.
+  /api/documentos/{id}/:
+    patch:
+      summary: Reemplaza documento propio.
+      tags: [004-registro-usuario-documentos]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [archivo]
+              properties:
+                archivo:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: Documento reemplazado y marcado pendiente.
+        "400":
+          description: Archivo invalido.
+        "401":
+          description: No autenticado.
+        "403":
+          description: Documento ajeno o rol no autorizado.
+  /api/documentos/{id}/validar/:
+    post:
+      summary: Aprueba o rechaza documento como administrador.
+      tags: [004-registro-usuario-documentos]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [estado]
+              properties:
+                estado:
+                  type: string
+                  enum: [VALIDADO, RECHAZADO]
+                motivo_rechazo:
+                  type: string
+      responses:
+        "200":
+          description: Documento actualizado.
+        "401":
+          description: No autenticado.
+        "403":
+          description: Rol no autorizado.
+        "404":
+          description: Documento no encontrado.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    RegisterRequest:
+      type: object
+      required: [nombre, apellido, tipo_identificacion, identificacion, username, correo, password]
+      properties:
+        nombre: { type: string }
+        apellido: { type: string }
+        tipo_identificacion:
+          type: string
+          enum: [CEDULA, RUC, PASAPORTE]
+        identificacion: { type: string }
+        username: { type: string }
+        correo: { type: string, format: email }
+        password: { type: string, format: password }
+        rol:
+          type: string
+          enum: [PROPIETARIO, CONDUCTOR]
+    Documento:
+      type: object
+      properties:
+        id: { type: integer }
+        cuenta: { type: integer }
+        cuenta_username: { type: string }
+        estado:
+          type: string
+          enum: [PENDIENTE, VALIDADO, RECHAZADO]
+        es_valido: { type: boolean }
+        nombre_original: { type: string }
+        content_type: { type: string }
+        tamano_bytes: { type: integer }
+        motivo_rechazo: { type: string }
+        fecha_creacion: { type: string, format: date-time }
+        fecha_actualizacion: { type: string, format: date-time }

@@ -1,0 +1,55 @@
+openapi: 3.0.3
+info:
+  title: ParkingPaTi API - Autenticacion JWT y roles
+  version: 0.1.0
+servers:
+  - url: http://localhost:8000
+paths:
+  /api/auth/register/:
+    post:
+      summary: Registra una cuenta base.
+      tags: [autenticacion]
+      security: []
+      responses:
+        "201":
+          description: Cuenta creada
+        "400":
+          description: Solicitud invalida
+  /api/auth/token/:
+    post:
+      summary: Autentica credenciales y devuelve tokens JWT.
+      tags: [autenticacion]
+      security: []
+      responses:
+        "200":
+          description: Tokens emitidos
+        "401":
+          description: Credenciales invalidas
+  /api/auth/refresh/:
+    post:
+      summary: Renueva access token usando refresh token.
+      tags: [autenticacion]
+      security: []
+      responses:
+        "200":
+          description: Access token renovado
+        "401":
+          description: Refresh token invalido o expirado
+  /api/cuentas/me/:
+    get:
+      summary: Devuelve el perfil autenticado.
+      tags: [autenticacion]
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Perfil autenticado
+        "401":
+          description: No autenticado
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+

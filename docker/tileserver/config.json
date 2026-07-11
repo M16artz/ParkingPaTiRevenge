@@ -1,0 +1,19 @@
+{
+  "options": {
+    "paths": {
+      "root": "/data",
+      "mbtiles": "/data"
+    }
+  },
+  "data": {
+    "loja": {
+      "mbtiles": "loja.mbtiles"
+    }
+  },
+  "styles": {
+    "osm-bright": {
+      "style": "https://api.maptiler.com/maps/streets/style.json?key=placeholder"
+    }
+  }
+}
+

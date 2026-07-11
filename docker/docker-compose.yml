@@ -1,0 +1,93 @@
+services:
+  backend:
+    build:
+      context: ../backend
+      dockerfile: ../docker/backend/Dockerfile
+    command: uvicorn backend.asgi:application --host 0.0.0.0 --port 8000 --workers 2
+    env_file:
+      - path: ../.env
+        required: false
+    environment:
+      DJANGO_SETTINGS_MODULE: backend.settings.development
+      SECRET_KEY: ${SECRET_KEY:-dev-only-change-me}
+      DJANGO_DEBUG: ${DJANGO_DEBUG:-True}
+      DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS:-localhost,127.0.0.1,0.0.0.0}
+      DB_NAME: ${DB_NAME:-parkingpati}
+      DB_USER: ${DB_USER:-parkingpati}
+      DB_PASSWORD: ${DB_PASSWORD:-parkingpati}
+      DB_HOST: db
+      DB_PORT: ${DB_PORT:-5432}
+      REDIS_URL: redis://redis:6379/0
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:5173,http://localhost:3000}
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    volumes:
+      - ../backend:/app
+
+  frontend-web:
+    build:
+      context: ../frontend-web
+      dockerfile: ../docker/frontend-web/Dockerfile
+    env_file:
+      - path: ../.env
+        required: false
+    environment:
+      VITE_API_BASE_URL: http://localhost:8000/api
+    ports:
+      - "5173:5173"
+    volumes:
+      - ../frontend-web:/app
+      - frontend_node_modules:/app/node_modules
+    depends_on:
+      - backend
+
+  db:
+    image: postgres:16.3-alpine
+    environment:
+      POSTGRES_DB: ${DB_NAME:-parkingpati}
+      POSTGRES_USER: ${DB_USER:-parkingpati}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-parkingpati}
+    ports:
+      - "5432:5432"
+    volumes:
+      - parkingpati_postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7.2-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - parkingpati_redis:/data
+
+  tileserver:
+    image: maptiler/tileserver-gl:v4.11.1
+    healthcheck:
+      disable: true
+    command:
+      - sh
+      - -c
+      - |
+        if [ -f /data/loja.mbtiles ]; then
+          exec tileserver-gl --config /data/config.json
+        fi
+        echo "No se encontro /data/loja.mbtiles. El tileserver queda en espera hasta el entregable de mapas."
+        tail -f /dev/null
+    ports:
+      - "3000:8080"
+    volumes:
+      - ./tileserver:/data
+
+volumes:
+  parkingpati_postgres:
+  parkingpati_redis:
+  frontend_node_modules:

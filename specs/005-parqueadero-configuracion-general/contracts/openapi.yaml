@@ -1,0 +1,148 @@
+openapi: 3.0.3
+info:
+  title: ParkingPaTi API - Parqueadero configuracion general
+  version: 0.1.0
+servers:
+  - url: http://localhost:8000
+security:
+  - bearerAuth: []
+paths:
+  /api/parqueaderos/:
+    get:
+      summary: Consulta administrativa de parqueaderos.
+      tags: [005-parqueadero-configuracion-general]
+      responses:
+        "200":
+          description: Lista de parqueaderos.
+        "401":
+          description: No autenticado.
+        "403":
+          description: No autorizado.
+    post:
+      summary: Crea parqueadero del propietario autenticado.
+      tags: [005-parqueadero-configuracion-general]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ParqueaderoWrite"
+      responses:
+        "201":
+          description: Parqueadero creado.
+        "400":
+          description: Datos invalidos.
+        "401":
+          description: No autenticado.
+        "403":
+          description: No autorizado.
+  /api/parqueaderos/mios/:
+    get:
+      summary: Lista parqueaderos del propietario autenticado.
+      tags: [005-parqueadero-configuracion-general]
+      responses:
+        "200":
+          description: Lista de parqueaderos propios.
+        "401":
+          description: No autenticado.
+        "403":
+          description: No autorizado.
+  /api/parqueaderos/{id}/:
+    patch:
+      summary: Edita datos generales, direccion y ubicacion de un parqueadero propio.
+      tags: [005-parqueadero-configuracion-general]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ParqueaderoWrite"
+      responses:
+        "200":
+          description: Parqueadero actualizado.
+        "400":
+          description: Datos invalidos.
+        "401":
+          description: No autenticado.
+        "403":
+          description: Parqueadero ajeno o rol no autorizado.
+  /api/parqueaderos/{id}/estado/:
+    patch:
+      summary: Cambia estado general abierto/cerrado/lleno.
+      tags: [005-parqueadero-configuracion-general]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [disponibilidad]
+              properties:
+                disponibilidad:
+                  type: string
+                  enum: [DISPONIBLE, CERRADO, LLENO]
+      responses:
+        "200":
+          description: Estado actualizado.
+        "400":
+          description: Estado invalido.
+        "401":
+          description: No autenticado.
+        "403":
+          description: Parqueadero ajeno o rol no autorizado.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Direccion:
+      type: object
+      required: [calle_principal]
+      properties:
+        calle_principal: { type: string }
+        calle_secundaria: { type: string }
+        nro_lote: { type: string }
+    Ubicacion:
+      type: object
+      required: [latitud, longitud]
+      properties:
+        latitud: { type: string, example: "-3.993130" }
+        longitud: { type: string, example: "-79.204220" }
+    ParqueaderoWrite:
+      type: object
+      required: [nombre, direccion, ubicacion]
+      properties:
+        nombre: { type: string }
+        disponibilidad:
+          type: string
+          enum: [DISPONIBLE, CERRADO, LLENO]
+        direccion:
+          $ref: "#/components/schemas/Direccion"
+        ubicacion:
+          $ref: "#/components/schemas/Ubicacion"
+    ParqueaderoRead:
+      allOf:
+        - $ref: "#/components/schemas/ParqueaderoWrite"
+        - type: object
+          properties:
+            id: { type: integer }
+            propietario: { type: integer }
+            propietario_username: { type: string }
+            estado:
+              type: string
+              enum: [ACTIVO, INACTIVO, SUSPENDIDO]
+            validado: { type: boolean }
+            fecha_creacion: { type: string, format: date-time }
+            fecha_actualizacion: { type: string, format: date-time }
