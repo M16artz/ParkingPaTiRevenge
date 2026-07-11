@@ -1,0 +1,56 @@
+openapi: 3.0.3
+info:
+  title: ParkingPaTi API — Base del monorepo e infraestructura mínima
+  version: 0.1.0
+servers:
+- url: http://localhost:8000
+security:
+- bearerAuth: []
+paths:
+  /api/health/:
+    get:
+      summary: Verifica que backend, base de datos y caché respondan.
+      tags:
+      - 001-base-monorepo-infra-scaffolding
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operación exitosa
+        '201':
+          description: Recurso creado
+        '400':
+          description: Solicitud inválida
+        '401':
+          description: No autenticado
+        '403':
+          description: No autorizado
+        '404':
+          description: No encontrado
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: boolean
+        detail:
+          type: string
+        code:
+          type: string
+
+# Extensiones de esquema sugeridas
+components:
+  schemas:
+    HealthResponse:
+      type: object
+      properties:
+        status: { type: string, example: "ok" }
+        database: { type: string, example: "ok" }
+        cache: { type: string, example: "ok" }
+        version: { type: string, example: "0.1.0" }

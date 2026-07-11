@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ParkingPaTi - Explorador técnico de API</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-900 min-h-screen">
+  <header class="h-16 bg-white border-b flex items-center justify-between px-6">
+    <div class="font-bold text-xl text-emerald-700">ParkingPaTi</div>
+    <nav class="text-sm text-slate-500">Prototipo · Backend base de dominio y API</nav>
+  </header>
+  <main class="p-8">
+    <section class="bg-white border rounded-2xl shadow-sm p-6 mb-6">
+      <p class="text-xs uppercase tracking-widest text-emerald-700 font-bold">Pantalla clave</p>
+      <h1 class="text-3xl font-bold mt-2">Explorador técnico de API</h1>
+      <p class="text-slate-600 mt-2">Mockup de baja fidelidad para guiar a agentes de frontend y pruebas.</p>
+    </section>
+    <section class="grid md:grid-cols-3 gap-4">
+      <article class="bg-white rounded-xl border p-5">
+        <h2 class="font-bold">Entrada</h2>
+        <div class="mt-4 space-y-3">
+          <div class="h-10 bg-slate-100 rounded border"></div>
+          <div class="h-10 bg-slate-100 rounded border"></div>
+          <button class="w-full h-10 rounded bg-emerald-600 text-white font-semibold">Ejecutar acción</button>
+        </div>
+      </article>
+      <article class="bg-white rounded-xl border p-5">
+        <h2 class="font-bold">Estado</h2>
+        <div class="mt-4 flex gap-2 flex-wrap">
+          <span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-sm">Disponible</span>
+          <span class="px-3 py-1 rounded-full bg-amber-100 text-amber-700 text-sm">Pendiente</span>
+          <span class="px-3 py-1 rounded-full bg-rose-100 text-rose-700 text-sm">Error</span>
+        </div>
+      </article>
+      <article class="bg-white rounded-xl border p-5">
+        <h2 class="font-bold">Resultado</h2>
+        <div class="mt-4 h-32 bg-slate-50 border rounded flex items-center justify-center text-slate-400">
+          Área de contenido
+        </div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

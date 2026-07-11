@@ -1,0 +1,23 @@
+{
+  "options": {
+    "paths": {
+      "root": "/data",
+      "fonts": "fonts",
+      "styles": "styles",
+      "mbtiles": "mbtiles"
+    }
+  },
+  "styles": {
+    "osm-bright": {
+      "style": "styles/osm-bright/style.json",
+      "tilejson": {
+        "bounds": [-81.1, -5.1, -75.2, 1.8]
+      }
+    }
+  },
+  "data": {
+    "ecuador": {
+      "mbtiles": "mbtiles/ecuador.mbtiles"
+    }
+  }
+}

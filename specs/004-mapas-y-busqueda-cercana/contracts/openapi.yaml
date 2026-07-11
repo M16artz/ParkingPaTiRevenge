@@ -1,0 +1,77 @@
+openapi: 3.0.3
+info:
+  title: ParkingPaTi API — Mapas, tiles y búsqueda cercana
+  version: 0.1.0
+servers:
+- url: http://localhost:8000
+security:
+- bearerAuth: []
+paths:
+  /api/parqueaderos/:
+    get:
+      summary: Lista parqueaderos cercanos ordenados por distancia.
+      tags:
+      - 004-mapas-y-busqueda-cercana
+      security: []
+      responses:
+        '200':
+          description: Operación exitosa
+        '201':
+          description: Recurso creado
+        '400':
+          description: Solicitud inválida
+        '401':
+          description: No autenticado
+        '403':
+          description: No autorizado
+        '404':
+          description: No encontrado
+  /api/parqueaderos/{id}/:
+    get:
+      summary: Detalle público de parqueadero.
+      tags:
+      - 004-mapas-y-busqueda-cercana
+      security: []
+      responses:
+        '200':
+          description: Operación exitosa
+        '201':
+          description: Recurso creado
+        '400':
+          description: Solicitud inválida
+        '401':
+          description: No autenticado
+        '403':
+          description: No autorizado
+        '404':
+          description: No encontrado
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: boolean
+        detail:
+          type: string
+        code:
+          type: string
+
+# Extensiones de esquema sugeridas
+components:
+  schemas:
+    ParqueaderoCercano:
+      type: object
+      properties:
+        id: { type: integer }
+        nombre: { type: string }
+        latitud: { type: number, format: double }
+        longitud: { type: number, format: double }
+        distancia_metros: { type: number, example: 240.5 }
+        disponibilidad: { type: string, enum: [ABIERTO, CERRADO, LLENO, FUERA_DE_SERVICIO] }
+        espacios_libres: { type: integer }

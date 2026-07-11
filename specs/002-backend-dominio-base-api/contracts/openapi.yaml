@@ -1,0 +1,165 @@
+openapi: 3.0.3
+info:
+  title: ParkingPaTi API — Backend base de dominio y API
+  version: 0.1.0
+servers:
+- url: http://localhost:8000
+security:
+- bearerAuth: []
+paths:
+  /api/auth/token/:
+    post:
+      summary: Iniciar sesión.
+      tags:
+      - 002-backend-dominio-base-api
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operación exitosa
+        '201':
+          description: Recurso creado
+        '400':
+          description: Solicitud inválida
+        '401':
+          description: No autenticado
+        '403':
+          description: No autorizado
+        '404':
+          description: No encontrado
+  /api/auth/refresh/:
+    post:
+      summary: Renovar token.
+      tags:
+      - 002-backend-dominio-base-api
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operación exitosa
+        '201':
+          description: Recurso creado
+        '400':
+          description: Solicitud inválida
+        '401':
+          description: No autenticado
+        '403':
+          description: No autorizado
+        '404':
+          description: No encontrado
+  /api/auth/register/:
+    post:
+      summary: Registrar cuenta.
+      tags:
+      - 002-backend-dominio-base-api
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operación exitosa
+        '201':
+          description: Recurso creado
+        '400':
+          description: Solicitud inválida
+        '401':
+          description: No autenticado
+        '403':
+          description: No autorizado
+        '404':
+          description: No encontrado
+  /api/parqueaderos/:
+    get:
+      summary: Listar parqueaderos según permisos.
+      tags:
+      - 002-backend-dominio-base-api
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operación exitosa
+        '201':
+          description: Recurso creado
+        '400':
+          description: Solicitud inválida
+        '401':
+          description: No autenticado
+        '403':
+          description: No autorizado
+        '404':
+          description: No encontrado
+  /api/espacios/:
+    get:
+      summary: Listar espacios.
+      tags:
+      - 002-backend-dominio-base-api
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operación exitosa
+        '201':
+          description: Recurso creado
+        '400':
+          description: Solicitud inválida
+        '401':
+          description: No autenticado
+        '403':
+          description: No autorizado
+        '404':
+          description: No encontrado
+  /api/horarios/:
+    get:
+      summary: Listar horarios.
+      tags:
+      - 002-backend-dominio-base-api
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operación exitosa
+        '201':
+          description: Recurso creado
+        '400':
+          description: Solicitud inválida
+        '401':
+          description: No autenticado
+        '403':
+          description: No autorizado
+        '404':
+          description: No encontrado
+  /api/tarifas/:
+    get:
+      summary: Listar tarifas.
+      tags:
+      - 002-backend-dominio-base-api
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Operación exitosa
+        '201':
+          description: Recurso creado
+        '400':
+          description: Solicitud inválida
+        '401':
+          description: No autenticado
+        '403':
+          description: No autorizado
+        '404':
+          description: No encontrado
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: boolean
+        detail:
+          type: string
+        code:
+          type: string
